@@ -134,7 +134,7 @@
           this.id = requestUrlParam('id')
           this.actionType = this.id ? 'edit' : 'add'
           if (this.id) {
-            this.init()
+            this.init() // if url has an id param, do init(), i.e. edit
           }
         },
         mounted() {
@@ -190,8 +190,9 @@
                   }
                   editEmployee(params).then(res => {
                     if (res.code === 1) {
-                      this.$message.success('员工信息修改成功！')
-                      this.goBack()
+                      Vue.prototype.$message.success('员工信息修改成功！')
+                      this.goBack();
+
                     } else {
                       this.$message.error(res.msg || '操作失败')
                     }
@@ -206,11 +207,13 @@
             })
           },
           goBack(){
+
             window.parent.menuHandle({
               id: '2',
               url: '/backend/page/member/list.html',
               name: '员工管理'
             },false)
+
           }
         }
       })

@@ -17,3 +17,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: ASSIGN_ID
+
+#web:
+#  resources:
+#    static-locations: classpath:/backend/,classpath:/front/

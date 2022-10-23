@@ -5,13 +5,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>瑞吉外卖管理端</title>
-  <link rel="shortcut icon" href="../../favicon.ico">
+  <title>Ebor Delivery Management</title>
+  <link rel="shortcut icon" href="../../ico3.ico">
   <!-- 引入样式 -->
   <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
   <link rel="stylesheet" href="../../styles/common.css">
   <link rel="stylesheet" href="../../styles/login.css">
   <link rel="stylesheet" href="../../styles/icon/iconfont.css" />
+  <link rel="stylesheet" href="../../styles/mystyle.css" />
   <style>
     .body{
       min-width: 1366px;
@@ -20,13 +21,16 @@
 </head> 
 
 <body>
+
+<!--Header ends-->
   <div class="login" id="login-app">
+
     <div class="login-box">
       <img src="../../images/login/login-l.png" alt="">
       <div class="login-form">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" >
           <div class="login-form-title">
-            <img src="../../images/login/logo.png" style="width:139px;height:42px;" alt="" />
+            <img src="../../images/login/image4.png" style="width:128px;height:93px;" alt="" />
           </div>
           <el-form-item prop="username">
             <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号" maxlength="20"
@@ -44,9 +48,28 @@
             </el-button>
           </el-form-item>
         </el-form>
+
       </div>
+
+    </div>
+    <div>
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+           viewBox="10 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(160,196,255,0.8" />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(160,196,255,0.4)" />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(160,196,255,0.2)" />
+          <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(160,196,255,0.0)" />
+        </g>
+      </svg>
     </div>
   </div>
+
+
+
 
   <!-- 开发环境版本，包含了有帮助的命令行警告 -->
   <script src="../../plugins/vue/vue.js"></script>
