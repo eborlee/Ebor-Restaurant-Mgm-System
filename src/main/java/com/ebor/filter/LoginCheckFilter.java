@@ -1,6 +1,7 @@
 package com.ebor.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.ebor.common.BaseContext;
 import com.ebor.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
@@ -42,6 +43,10 @@ public class LoginCheckFilter implements Filter {
         }
 
         if(request.getSession().getAttribute("employee")!=null){
+
+            Long empId = (Long) request.getSession().getAttribute("employee");
+            BaseContext.setCurrentId(empId);
+
             filterChain.doFilter(request,response);
             return;
         }

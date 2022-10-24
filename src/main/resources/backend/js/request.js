@@ -33,8 +33,8 @@
         }
       }
       url = url.slice(0, -1);
-      config.params = {};
-      config.url = url;
+      config.params = {}; // clear the params
+      config.url = url; // set the new url
     }
     return config
   }, error => {

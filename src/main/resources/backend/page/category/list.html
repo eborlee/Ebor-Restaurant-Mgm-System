@@ -17,6 +17,18 @@
         class="tableBar"
         style="display: inline-block"
       >
+        <el-select v-model="value" clearable placeholder="Select Dish or Setmeal"
+                   @change="handleQuery"
+                   @remove-tag="handleQuery">
+          <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                 >
+          </el-option>
+        </el-select>
+
         <el-button
           type="primary"
           class="continue"
@@ -30,6 +42,7 @@
         >
           + 新增套餐分类
         </el-button>
+
       </div>
       <el-table
         :data="tableData"
@@ -164,7 +177,16 @@
               'categoryId': '',
               'name': '',
               sort: ''
-            }
+            },
+
+            options: [{
+                value: 1,
+                label: 'Dish'
+              }, {
+                value: 2,
+                label: 'Setmeal'
+              }],
+            value:""
           }
         },
         computed: {},
@@ -175,7 +197,12 @@
         },
         methods: {
           async init () {
-            await getCategoryPage({'page': this.page, 'pageSize': this.pageSize}).then(res => {
+            const params = {
+              page: this.page,
+              pageSize: this.pageSize,
+              type: this.value ? this.value : undefined
+            }
+            await getCategoryPage(params).then(res => {
               if (String(res.code) === '1') {
                 this.tableData = res.data.records
                 this.counts = Number(res.data.total)

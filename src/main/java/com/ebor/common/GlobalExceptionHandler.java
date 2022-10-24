@@ -21,11 +21,17 @@ public class GlobalExceptionHandler {
 
         if(ex.getMessage().contains("Duplicate entry")){
             String[] split = ex.getMessage().split(" ");
-            String msg  = Pattern.compile("[^0-9a-zA-Z]").matcher(split[2]).replaceAll("").trim()
+            log.info(String.valueOf(split));
+            String msg  = Pattern.compile("[^0-9a-zA-Z\u4e00-\u9fa5]").matcher(split[2]).replaceAll("").trim()
             + " has existed";
             return R.error(msg);
         }
 
         return R.error("Unknown error");
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public R<String> exceptionHandler(CustomException ex){
+        return R.error(ex.getMessage());
     }
 }
