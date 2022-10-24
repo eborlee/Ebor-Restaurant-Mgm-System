@@ -31,10 +31,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     public void remove(Long id) {
         LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<Dish>();
         dishLambdaQueryWrapper.eq(Dish::getCategoryId,id);
-        int count = dishService.count(dishLambdaQueryWrapper);
+        int count1 = dishService.count(dishLambdaQueryWrapper);
 
         // if the category is linked to dishes, throw an exception
-        if(count>0){
+        if(count1>0){
             throw new CustomException("This category is linked to certain dishes, you can't delete it.");
         }
 
