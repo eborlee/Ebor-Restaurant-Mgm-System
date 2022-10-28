@@ -333,7 +333,7 @@
         mounted() {
         },
         methods: {
-          async init () {
+          async init () { // 为了回显
             queryDishById(this.id).then(res => {
               console.log(res)
               if (String(res.code) === '1') {
@@ -389,7 +389,7 @@
 
           // 获取菜品分类
           getDishList () {
-            getCategoryList({ 'type': 1 }).then(res => {
+            getCategoryList({ 'type': 1 }).then(res => { // pass type 1 corresponds to the TYPE in category table
               if (res.code === 1) {
                 this.dishList = res.data
               } else {

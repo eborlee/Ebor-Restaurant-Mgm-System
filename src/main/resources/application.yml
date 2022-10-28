@@ -21,3 +21,6 @@ mybatis-plus:
 #web:
 #  resources:
 #    static-locations: classpath:/backend/,classpath:/front/
+
+eborDelivery:
+  path: D:\img\
