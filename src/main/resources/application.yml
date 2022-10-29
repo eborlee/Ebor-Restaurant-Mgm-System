@@ -9,6 +9,32 @@ spring:
       url: jdbc:mysql://localhost:3306/delivery?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: root
+
+  mail:
+    #配置smtp服务主机地址
+    protocol: smtps
+    host: smtp.163.com
+    #发送者邮箱
+    username: eborlee@163.com
+    #配置密码,注意不是真正的密码，而是刚刚申请到的授权码
+    password: XBJJJCVRKANGXVMA
+    #端口号465或587
+    port: 465
+    #默认的邮件编码为UTF-8
+    default-encoding: UTF-8
+    #其他参数
+    properties:
+      mail:
+        #配置SSL 加密工厂
+        smtp:
+          ssl:
+            #本地测试，先放开ssl
+            enable: false
+            required: false
+          #开启debug模式，这样邮件发送过程的日志会在控制台打印出来，方便排查错误
+        debug: true
+
+
 mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
@@ -16,7 +42,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
-      id-type: ASSIGN_ID
+      id-type: ASSIGN_ID # 雪花算法
 
 #web:
 #  resources:

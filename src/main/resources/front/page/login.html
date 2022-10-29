@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
-        <title>菩提阁</title>
-        <link rel="icon" href="./../images/favico.ico">
+        <title>Ebor Food</title>
+        <link rel="icon" href="../../backend/ico3.ico">
         <!--不同屏幕尺寸根字体设置-->
         <script src="./../js/base.js"></script>
         <!--element-ui的样式-->
@@ -18,17 +19,30 @@
         <!--本页面内容的样式-->
         <link rel="stylesheet" href="./../styles/login.css" />
       </head>
+    <style>
+        img{
+            max-width: 70%;
+            max-height: 70%;
+            margin-left: auto;
+            margin-right: auto;
+            display: block; /* remove extra space below image */
+        }
+    </style>
     <body>
         <div id="login" v-loading="loading">
-            <div class="divHead">登录</div>
-            <div class="divContainer">
-                <el-input placeholder=" 请输入手机号码" v-model="form.phone"  maxlength='20'/></el-input>
-                <div class="divSplit"></div>
-                <el-input placeholder=" 请输入验证码" v-model="form.code"  maxlength='20'/></el-input>
-                <span @click='getCode'>获取验证码</span>
+            <div class="divHead">
+                <img src="../../backend/images/login/image5.png" alt="" style="max-height: 50%" />
+                <br>
+                Login to use EborFood
             </div>
-            <div class="divMsg" v-if="msgFlag">手机号输入不正确，请重新输入</div>
-            <el-button type="primary" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="btnLogin">登录</el-button>
+            <div class="divContainer">
+                <el-input placeholder=" Please input your email" v-model="form.phone"  maxlength='50'/></el-input>
+                <div class="divSplit"></div>
+                <el-input placeholder=" Please the code" v-model="form.code"  maxlength='20'/></el-input>
+                <span @click='getCode'>Get Verification Code</span>
+            </div>
+            <div class="divMsg" v-if="msgFlag">Wrong email format</div>
+            <el-button type="primary" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="btnLogin">Login</el-button>
         </div>
         <!-- 开发环境版本，包含了有帮助的命令行警告 -->
         <script src="../../backend/plugins/vue/vue.js"></script>
@@ -60,10 +74,12 @@
             methods:{
                 getCode(){
                     this.form.code = ''
-                    const regex = /^(13[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})|(19[0-9]{9})$/;
+                    // const regex = /^(13[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})|(19[0-9]{9})$/;
+                    const regex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
                     if (regex.test(this.form.phone)) {
                         this.msgFlag = false
-                        this.form.code = (Math.random()*1000000).toFixed(0)
+                        //this.form.code = (Math.random()*1000000).toFixed(0)
+                        sendMsgApi({sendTo:this.form.phone})
                     }else{
                         this.msgFlag = true
                     }
@@ -71,7 +87,7 @@
                 async btnLogin(){
                     if(this.form.phone && this.form.code){
                         this.loading = true
-                        const res = await loginApi({phone:this.form.phone})
+                        const res = await loginApi({email:this.form.phone, code:this.form.code})
                         this.loading = false
                         if(res.code === 1){
                             sessionStorage.setItem("userPhone",this.form.phone)
