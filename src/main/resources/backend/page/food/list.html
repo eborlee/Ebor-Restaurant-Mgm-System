@@ -208,7 +208,8 @@
               'confirmButtonText': '确定',
               'cancelButtonText': '取消',
             }).then(() => {
-              deleteDish(type === '批量' ? this.checkList.join(',') : id).then(res => {
+              alert(this.checkList.join(','));
+              deleteDish(type === '批量' ? this.checkList.join(',') : String.valueOf(id)).then(res => {
                 if (res.code === 1) {
                   this.$message.success('删除成功！')
                   this.handleQuery()
@@ -224,14 +225,14 @@
           //状态更改
           statusHandle (row) {
             let params = {}
-            if (typeof row === 'string' ) {
+            if (typeof row === 'string' ) { // if directly pass in a '1' or '0', i.e. batch operation
               if (this.checkList.length === 0) {
                 this.$message.error('批量操作，请先勾选操作菜品！')
                 return false
               }
               params.id = this.checkList.join(',')
               params.status = row
-            } else {
+            } else { // single data operation
               params.id = row.id
               params.status = row.status ? '0' : '1'
             }

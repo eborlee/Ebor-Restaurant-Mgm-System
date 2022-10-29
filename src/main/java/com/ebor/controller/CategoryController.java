@@ -75,7 +75,7 @@ public class CategoryController {
     public R<List<Category>> list(Category category){
         LambdaQueryWrapper<Category> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 
-        lambdaQueryWrapper.eq(category.getType()!=null, Category::getType, category.getType());
+        lambdaQueryWrapper.eq(category.getType()!=null, Category::getType, category.getType()); // to query dish cate or setmeal cate
         lambdaQueryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
 
         List<Category> list = categoryService.list(lambdaQueryWrapper);
