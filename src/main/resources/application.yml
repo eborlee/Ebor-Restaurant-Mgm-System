@@ -15,9 +15,9 @@ spring:
     protocol: smtps
     host: smtp.163.com
     #发送者邮箱
-    username: eborlee@163.com
+    username: 
     #配置密码,注意不是真正的密码，而是刚刚申请到的授权码
-    password: XBJJJCVRKANGXVMA
+    password:
     #端口号465或587
     port: 465
     #默认的邮件编码为UTF-8
