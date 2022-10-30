@@ -83,4 +83,15 @@ public class SetmealController {
         setmealService.removeWithDish(ids);
         return R.success("Succesfully deleted the selected setmeal(s)");
     }
+
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Setmeal setmeal){
+        LambdaQueryWrapper<Setmeal> qw = new LambdaQueryWrapper<>();
+        qw.eq(setmeal.getCategoryId()!=null, Setmeal::getCategoryId, setmeal.getCategoryId());
+        qw.eq(setmeal.getStatus()!=null, Setmeal::getStatus, setmeal.getStatus());
+        qw.orderByDesc(Setmeal::getUpdateTime);
+
+        List<Setmeal> list = setmealService.list(qw);
+        return R.success(list);
+    }
 }

@@ -102,4 +102,20 @@ public class AddressBookController {
         //SQL:select * from address_book where user_id = ? order by update_time desc
         return R.success(addressBookService.list(queryWrapper));
     }
+
+    @DeleteMapping
+    public R<String> delete(@RequestParam("ids") Long id){
+        log.info(String.valueOf(id));
+        addressBookService.removeById(id);
+
+        return R.success("Successfully deleted the address");
+    }
+
+    @PutMapping
+    public R<AddressBook> update(@RequestBody AddressBook addressBook){
+//        addressBook.setUserId(BaseContext.getCurrentId());
+        log.info("addressBook:{}", addressBook);
+        addressBookService.updateById(addressBook);
+        return R.success(addressBook);
+    }
 }
