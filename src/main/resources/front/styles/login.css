@@ -38,7 +38,10 @@
 }
 
 #login .divContainer span {
+  background-color: #a47201;
+  border-radius: 20px;
   position: absolute;
+
   right: 20rem;
   top: 20rem;
   cursor: pointer;
@@ -50,6 +53,22 @@
   color: #ffc200;
   letter-spacing: 0px;
 }
+
+#login .getCode {
+  width: 356rem;
+  height: 40rem;
+  right: 5px;
+  border: 0;
+  margin: 20rem 10rem 0 10rem;
+  bottom: 70px;
+  color: #333333;
+  background-color: #ff773a;
+  font-weight : bold;
+  border-radius: 20px;
+  padding: 5px;
+
+}
+
 
 #login .divMsg {
   width: 168px;
@@ -65,6 +84,8 @@
   margin-top: 10rem;
 }
 
+
+
 #login .btnSubmit {
   width: 356rem;
   height: 40rem;
@@ -76,23 +97,28 @@
   font-family: PingFangSC, PingFangSC-Regular;
   font-weight: 500;
   text-align: center;
+  font-weight : bold;
 }
 
 #login .btnNoPhone {
   color: #666666;
   background: #d8d8d8;
+  font-weight : bold;
 }
 
 #login .btnNoPhone:active {
   background: #afafaf;
+  font-weight : bold;
 }
 
 #login .btnPhone {
   background: #ffc200;
   color: #333333;
+  font-weight : bold;
 }
 
 #login .btnPhone:active {
   background: rgba(255, 142, 0, 1);
   color: #333333;
+  font-weight : bold;
 }

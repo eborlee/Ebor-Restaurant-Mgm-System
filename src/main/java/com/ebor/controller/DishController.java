@@ -14,11 +14,14 @@ import com.ebor.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,6 +39,9 @@ public class DishController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     /**
      * Add new dish
      * @param dishDto
@@ -45,6 +51,16 @@ public class DishController {
     public R<String> save(@RequestBody DishDto dishDto){
         log.info(String.valueOf(dishDto));
         dishService.saveWithFlavor(dishDto);
+
+        // clear caches of dishes in Redis
+//        Set keys = redisTemplate.keys("dish_*");
+//        redisTemplate.delete(keys);
+
+        // clear more precisely
+        String key = "dish_" + dishDto.getCategoryId() + "_1";
+        redisTemplate.delete(key);
+
+
         return R.success("Successfully added the new dish!");
     }
 
@@ -112,6 +128,15 @@ public class DishController {
     public R<String> update(@RequestBody DishDto dishDto){
         log.info(String.valueOf(dishDto));
         dishService.updateWithFlavor(dishDto);
+
+        // clear caches of dishes in Redis
+//        Set keys = redisTemplate.keys("dish_*");
+//        redisTemplate.delete(keys);
+
+        // clear more precisely
+        String key = "dish_" + dishDto.getCategoryId() + "_1";
+        redisTemplate.delete(key);
+
         return R.success("Successfully updates the new dish!");
     }
 
@@ -182,8 +207,23 @@ public class DishController {
 //        return R.success(list);
 //    }
 
+
+    /**
+     * Get a list of dishes according to category
+     * @param dish
+     * @return
+     */
     @GetMapping("/list")
     public R<List<DishDto>> list(Dish dish){
+        String key = "dish_" +dish.getCategoryId() + "_" + dish.getStatus();
+        List<DishDto> dishDtoList = null;
+        // get cache data from Redis
+        dishDtoList = (List<DishDto>) redisTemplate.opsForValue().get(key);
+        // if exists, return
+        if(dishDtoList!=null){
+            R.success(dishDtoList);
+        }
+        // if not exists, query the database
 
         LambdaQueryWrapper<Dish> qw = new LambdaQueryWrapper<>();
         qw.eq(dish.getCategoryId()!=null, Dish::getCategoryId, dish.getCategoryId());
@@ -192,7 +232,7 @@ public class DishController {
         qw.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime );
 
         List<Dish> list = dishService.list(qw);
-        List<DishDto> dishDtoList = list.stream().map((item)->{
+        dishDtoList = list.stream().map((item)->{
             DishDto dishDto = new DishDto();
 
             // copy the properties in Dish object to DishDto object
@@ -217,7 +257,7 @@ public class DishController {
             return dishDto;
         }).collect(Collectors.toList());
 
-
+        redisTemplate.opsForValue().set(key, dishDtoList, 60, TimeUnit.MINUTES);
 
         return R.success(dishDtoList);
     }

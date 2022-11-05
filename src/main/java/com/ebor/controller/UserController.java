@@ -7,6 +7,7 @@ import com.ebor.entity.User;
 import com.ebor.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @PostMapping("/login")
     public R<User> login(@RequestBody Map map, HttpSession session){
         log.info(map.toString());
@@ -34,7 +38,11 @@ public class UserController {
         String code = map.get("code").toString();
 
         // get code from session
-        Object codeInSession = session.getAttribute(email);
+//        Object codeInSession = session.getAttribute(email);
+
+
+        // get code from Redis
+        Object codeInSession = redisTemplate.opsForValue().get(email);
 
         if(codeInSession!=null && codeInSession.equals(code)){
 
@@ -51,12 +59,13 @@ public class UserController {
 
             }
             session.setAttribute("user",user.getId());
+
+            // if user successfully logins, delete the code in redis
+            redisTemplate.delete(email);
+
             return R.success(user);
 
         }
-
-
         return R.error("Failed to login");
     }
-
 }

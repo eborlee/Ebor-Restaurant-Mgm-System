@@ -32,16 +32,26 @@
         <div id="login" v-loading="loading">
             <div class="divHead">
                 <img src="../../backend/images/login/image5.png" alt="" style="max-height: 50%" />
-                <br>
-                Login to use EborFood
+
             </div>
             <div class="divContainer">
                 <el-input placeholder=" Please input your email" v-model="form.phone"  maxlength='50'/></el-input>
+
                 <div class="divSplit"></div>
-                <el-input placeholder=" Please the code" v-model="form.code"  maxlength='20'/></el-input>
-                <span @click='getCode'>Get Verification Code</span>
+                <el-input placeholder=" Please input the code" v-model="form.code"  maxlength='20'/></el-input>
+
+
+<!--                <span class="span" @click='getCode' ></span>-->
             </div>
             <div class="divMsg" v-if="msgFlag">Wrong email format</div>
+            <input
+                    class="getCode"
+                    type="button"
+                    @click="getCode"
+                    ref="eleCode"
+                    :value="codeText"
+            />
+
             <el-button type="primary" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="btnLogin">Login</el-button>
         </div>
         <!-- 开发环境版本，包含了有帮助的命令行警告 -->
@@ -65,13 +75,37 @@
                         code:''
                     },
                     msgFlag:false,
-                    loading:false
+                    loading:false,
+                    codeText:"Get Code",
+                    loginNumberVal: "",
+                    loginCodeVal: "",
+                    rightCode: 1234,
+                    isRegistered: true, //是否已注册
+                    isTrue: false,
+                    timer: 60,//倒计时时间设置成五秒
                 }
             },
             computed:{},
             created(){},
             mounted(){},
             methods:{
+                codeTimer() {
+                    let _this = this;
+                    if (this.timer >= 1) {
+                        this.$refs.eleCode.setAttribute("disabled", "true");
+                        this.$refs.eleCode.setAttribute("value", "Regain the code after "+this.timer + " s");
+                        this.$refs.eleCode.style.backgroundColor = "#fce0d2";
+                        this.timer--;
+                        setTimeout(function () {
+                            _this.codeTimer();
+                        }, 1000);
+                    } else {
+                        this.$refs.eleCode.setAttribute("value", this.codeText);
+                        this.$refs.eleCode.removeAttribute("disabled");
+                        this.$refs.eleCode.style.backgroundColor = "#f16622";
+                        this.timer = 5;
+                    }
+                },
                 getCode(){
                     this.form.code = ''
                     // const regex = /^(13[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})|(19[0-9]{9})$/;
@@ -80,6 +114,8 @@
                         this.msgFlag = false
                         //this.form.code = (Math.random()*1000000).toFixed(0)
                         sendMsgApi({sendTo:this.form.phone})
+                        this.codeTimer();
+                        this.isTrue = true;
                     }else{
                         this.msgFlag = true
                     }
