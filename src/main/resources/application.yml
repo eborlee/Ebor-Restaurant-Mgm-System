@@ -46,6 +46,10 @@ spring:
         max-idle: 4
         min-idle: 0
 
+  cache:
+    redis:
+      time-to-live: 1800000 # 设置缓存过期时间
+
 
 mybatis-plus:
   configuration:
