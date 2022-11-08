@@ -19,6 +19,8 @@ target/
 *.iml
 *.ipr
 
+.yml
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -31,3 +33,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/front/page/test.html
+/src/main/resources/application.yml
