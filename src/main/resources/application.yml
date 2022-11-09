@@ -54,7 +54,7 @@ spring:
     datasource:
       names:
         master,slave
-      # 主数据源
+      # Main data source
       master:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver

@@ -42,7 +42,7 @@ public class CategoryController {
     public R<Page> page(int page, int pageSize, Integer type){
 
         // page constructor
-        Page<Category> pageInfo = new Page<>();
+        Page<Category> pageInfo = new Page<>(page, pageSize);
         // condition constructor
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         // add order condition according to Sort

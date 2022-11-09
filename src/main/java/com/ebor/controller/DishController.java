@@ -14,6 +14,7 @@ import com.ebor.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -214,6 +215,7 @@ public class DishController {
      * @return
      */
     @GetMapping("/list")
+    @Cacheable(value="dishCache", key = "#dish.categoryId +'_'+#dish.status")
     public R<List<DishDto>> list(Dish dish){
         String key = "dish_" +dish.getCategoryId() + "_" + dish.getStatus();
         List<DishDto> dishDtoList = null;

@@ -26,7 +26,7 @@
             </div>
             <div class="divBody" v-if="orderList.length > 0">
                 <van-list
-                    v-model="loading"
+                    v-model="loadings"
                     :finished="finished"
                     finished-text="没有更多了"
                     @load="getList"
@@ -79,7 +79,7 @@
                         pageSize:5
                     },
                     orderList:[],
-                    loading:false,
+                    loadings:true,
                     finished:false
                 }
             },
@@ -105,8 +105,8 @@
                 },
                 async getList(){
                     if(this.finished){
-                        this.loading = false;
-                        return
+                        this.loadings = false;
+                        return;
                     }
                     const res = await orderPagingApi(this.paging)
                     if(res.code === 1){
@@ -121,7 +121,7 @@
                                 item.sumNum = number
                             })
                         }
-                        this.loading = false;
+                        this.loadings = false;
                         if(this.paging.page >= res.data.pages){
                             this.finished = true;
                         }

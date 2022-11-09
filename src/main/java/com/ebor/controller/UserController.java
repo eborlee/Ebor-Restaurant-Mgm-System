@@ -50,6 +50,8 @@ public class UserController {
             LambdaQueryWrapper<User> qw = new LambdaQueryWrapper<>();
             qw.eq(User::getEmail, email);
             User user = userService.getOne(qw);
+            log.info("user:======================"+user);
+
             if(user==null){// new user
                 user = new User();
                 user.setEmail(email);
@@ -58,6 +60,7 @@ public class UserController {
 
 
             }
+            log.info(String.valueOf(user.getId()));
             session.setAttribute("user",user.getId());
 
             // if user successfully logins, delete the code in redis
